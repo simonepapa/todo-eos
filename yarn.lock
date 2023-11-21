@@ -237,6 +237,16 @@
   dependencies:
     tslib "^2.1.0"
 
+"@wharfkit/contract@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@wharfkit/contract/-/contract-1.0.0.tgz#dd1da288ad1eddb439053b9289646199a7c14a43"
+  integrity sha512-l9EefsV6SNQnqcQjjRE2PCWEG70I/PHRifIdyvupjiMRKkbzOuE/efBlM9ch9tWXn3p8N5ydKw7frJa1mk1DtA==
+  dependencies:
+    "@wharfkit/abicache" "^1.2.0"
+    "@wharfkit/antelope" "^1.0.0"
+    "@wharfkit/signing-request" "^3.1.0"
+    tslib "^2.1.0"
+
 "@wharfkit/session@^1.2.1":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@wharfkit/session/-/session-1.2.1.tgz#e0fa8ce11eac218a4eb63670416844188ecb55bd"
