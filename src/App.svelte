@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { onMount } from 'svelte'
-    import { login, logout, restore, session } from './wharf'
+    import {onMount} from 'svelte'
+    import {login, logout, restore, session} from './wharf'
 
     onMount(restore)
 </script>
