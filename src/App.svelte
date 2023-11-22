@@ -1,6 +1,7 @@
 <script lang="ts">
     import {onMount} from 'svelte'
     import {login, logout, restore, session} from './wharf'
+    import Todo from './Todo.svelte'
 
     onMount(restore)
 </script>
@@ -22,6 +23,10 @@
         </div>
     </div>
 </header>
+
+{#if $session}
+    <Todo session={$session} />
+{/if}
 
 <style>
     .grid button {
