@@ -1,6 +1,8 @@
 <script lang="ts">
     import type {Session} from '@wharfkit/session'
-    import {Contract} from './contract'
+    import {Contract, Types} from './contract'
+    import {onMount} from 'svelte'
+    import {type Writable, writable} from 'svelte/store'
 
     export let session: Session
 
@@ -29,7 +31,18 @@
 
         // Reset the form inputs
         form.reset()
+
+        // Reload the tasks from the smart contract after a short delay
+        setTimeout(getTasks, 500)
     }
+
+    const tasks: Writable<Types.todo_row[]> = writable([])
+
+    async function getTasks() {
+        tasks.set(await contract.table('todos', session.actor).all())
+    }
+
+    onMount(getTasks)
 </script>
 
 <main>
@@ -41,7 +54,43 @@
             required
         />
     </form>
+    {#each $tasks as task}
+        <div class="grid">
+            <div class="details">
+                <div class="status">
+                    {#if task.completed.equals(1)}
+                        ✅
+                    {:else}
+                        ⌛
+                    {/if}
+                </div>
+                <div class="headings">
+                    <h5>{task.description}</h5>
+                    <h6>{new Date(task.timestamp.toMilliseconds()).toDateString()}</h6>
+                </div>
+            </div>
+            <div />
+            <div class="controls"></div>
+        </div>
+    {:else}
+        <hgroup>
+            <h3>No tasks</h3>
+            <h4>Create your first task using the textbox above.</h4>
+        </hgroup>
+    {/each}
 </main>
 
 <style>
+    .status {
+        float: left;
+        font-size: 2em;
+        padding: 0.1em 0.5em;
+    }
+    .controls button {
+        width: auto;
+        display: inline;
+    }
+    main hgroup {
+        text-align: center;
+    }
 </style>
