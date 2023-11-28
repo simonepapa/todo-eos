@@ -36,6 +36,35 @@
         setTimeout(getTasks, 500)
     }
 
+    async function setTaskComplete(id: number, complete: boolean) {
+        // Assemble the smart contract action to complete the task
+        const action = contract.action('setcomplete', {
+            author: session.actor,
+            id: id,
+            complete,
+        })
+
+        // Perform the transaction
+        await session.transact({action})
+
+        // Reload the tasks from the smart contract after a short delay
+        setTimeout(getTasks, 500)
+    }
+
+    async function deleteTask(id: number) {
+        // Assemble the smart contract action to delete the task
+        const action = contract.action('erase', {
+            author: session.actor,
+            id,
+        })
+
+        // Perform the transaction
+        await session.transact({action})
+
+        // Reload the tasks from the smart contract after a short delay
+        setTimeout(getTasks, 500)
+    }
+
     const tasks: Writable<Types.todo_row[]> = writable([])
 
     async function getTasks() {
@@ -70,7 +99,18 @@
                 </div>
             </div>
             <div />
-            <div class="controls"></div>
+            <div class="controls">
+                {#if task.completed.equals(1)}
+                    <button class="secondary" on:click={() => setTaskComplete(task.id, false)}>
+                        Mark incomplete
+                    </button>
+                {:else}
+                    <button class="primary" on:click={() => setTaskComplete(task.id, true)}>
+                        Mark complete
+                    </button>
+                {/if}
+                <button class="tertiary" on:click={() => deleteTask(task.id)}> Delete task </button>
+            </div>
         </div>
     {:else}
         <hgroup>
