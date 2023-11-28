@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@wharfkit/session": "^1.1.1",
+    "@wharfkit/transact-plugin-resource-provider": "^1.1.0",
     "@wharfkit/wallet-plugin-privatekey": "^1.1.0",
     "@wharfkit/web-renderer": "^1.1.1"
   }

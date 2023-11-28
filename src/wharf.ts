@@ -1,4 +1,5 @@
 import {Chains, Session, SessionKit} from '@wharfkit/session'
+import {TransactPluginResourceProvider} from '@wharfkit/transact-plugin-resource-provider'
 import {WalletPluginPrivateKey} from '@wharfkit/wallet-plugin-privatekey'
 import {WebRenderer} from '@wharfkit/web-renderer'
 
@@ -9,12 +10,17 @@ const key = 'PVT_K1_2DK8hmjUJwsA1jfdps3uGRm82zhQ2jzZc6ThyJUKe3yRCer5Ni'
 const chains = [Chains.Jungle4]
 
 // Create a new session kit instance
-export const sessionKit = new SessionKit({
-    appName: 'todo-app',
-    chains,
-    ui: new WebRenderer(),
-    walletPlugins: [new WalletPluginPrivateKey(key)],
-})
+export const sessionKit = new SessionKit(
+    {
+        appName: 'todo-app',
+        chains,
+        ui: new WebRenderer(),
+        walletPlugins: [new WalletPluginPrivateKey(key)],
+    },
+    {
+        transactPlugins: [new TransactPluginResourceProvider()],
+    }
+)
 
 // Storage for the current user session
 export let session: Session | undefined
