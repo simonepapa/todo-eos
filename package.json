@@ -16,10 +16,11 @@
     "svelte-check": "^3.4.6",
     "tslib": "^2.6.0",
     "typescript": "^5.0.2",
-    "vite": "^4.4.5"
+    "vite": "^4.4.5",
+    "yarn-deduplicate": "^6.0.2"
   },
   "dependencies": {
-    "@wharfkit/session": "^1.1.1",
+    "@wharfkit/session": "^1.2.1",
     "@wharfkit/transact-plugin-resource-provider": "^1.1.0",
     "@wharfkit/wallet-plugin-privatekey": "^1.1.0",
     "@wharfkit/web-renderer": "^1.1.1"
