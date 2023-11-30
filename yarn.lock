@@ -208,7 +208,7 @@
   resolved "https://registry.yarnpkg.com/@types/pug/-/pug-2.0.9.tgz#97e765bb8eb0b90380524583f1f10838f29822f9"
   integrity sha512-Yg4LkgFYvn1faISbDNWmcAC1XoDT8IoMUFspp5mnagKk+UvD2N0IWt5A7GRdMubsNWqgCLmrkf8rXkzNqb4szA==
 
-"@wharfkit/abicache@^1.2.1":
+"@wharfkit/abicache@^1.2.0", "@wharfkit/abicache@^1.2.1":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@wharfkit/abicache/-/abicache-1.2.1.tgz#f2ce1f0d01a105b633a68b7a8eacaaff12218c05"
   integrity sha512-LPlD8U/+QUkXDqYrr2DRUa+VFUCR+muNOLUN1Uh3+TU2pbr4uKSt9EOBf3VkEAVov5BA96exysWCD1sp+K7orw==
