@@ -27,13 +27,20 @@
         })
 
         // Perform the transaction
-        await session.transact({action})
+        const result = await session.transact({action})
+
+        // If the transaction provided return values, add each of them to the list of tasks
+        if (result.returns) {
+            for (const returnValue of result.returns) {
+                tasks.update((current) => {
+                    current.push(returnValue.data)
+                    return current
+                })
+            }
+        }
 
         // Reset the form inputs
         form.reset()
-
-        // Reload the tasks from the smart contract after a short delay
-        setTimeout(getTasks, 500)
     }
 
     async function setTaskComplete(id: number, complete: boolean) {
