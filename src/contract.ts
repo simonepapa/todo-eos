@@ -3,52 +3,9 @@ import {ABI, Blob, Name, Struct, TimePoint, UInt64} from '@wharfkit/antelope'
 import type {ActionOptions, ContractArgs, PartialBy, Table} from '@wharfkit/contract'
 import {Contract as BaseContract} from '@wharfkit/contract'
 export const abiBlob = Blob.from(
-    'DmVvc2lvOjphYmkvMS4yAAUDYWRkAAIGYXV0aG9yBG5hbWULZGVzY3JpcHRpb24Gc3RyaW5nBWVyYXNlAAIGYXV0aG9yBG5hbWUCaWQGdWludDY0CGVyYXNlYWxsAAEGYXV0aG9yBG5hbWULc2V0Y29tcGxldGUAAwZhdXRob3IEbmFtZQJpZAZ1aW50NjQIY29tcGxldGUEYm9vbAh0b2RvX3JvdwAFAmlkBnVpbnQ2NAZhdXRob3IEbmFtZQl0aW1lc3RhbXAKdGltZV9wb2ludAtkZXNjcmlwdGlvbgZzdHJpbmcJY29tcGxldGVkBnVpbnQ2NAQAAAAAAABSMgNhZGQAAAAAAACFzVUFZXJhc2UAAAAAMRqFzVUIZXJhc2VhbGwAAFRWsUqKssILc2V0Y29tcGxldGUAAQAAAAAATBPNA2k2NAAACHRvZG9fcm93AAAAAAEAAAAAAABSMgh0b2RvX3Jvdw=='
+    'DmVvc2lvOjphYmkvMS4yAAUDYWRkAAIGYXV0aG9yBG5hbWULZGVzY3JpcHRpb24Gc3RyaW5nBWVyYXNlAAIGYXV0aG9yBG5hbWUCaWQGdWludDY0CGVyYXNlYWxsAAEGYXV0aG9yBG5hbWULc2V0Y29tcGxldGUAAwZhdXRob3IEbmFtZQJpZAZ1aW50NjQIY29tcGxldGUEYm9vbAh0b2RvX3JvdwAFAmlkBnVpbnQ2NAZhdXRob3IEbmFtZQl0aW1lc3RhbXAKdGltZV9wb2ludAtkZXNjcmlwdGlvbgZzdHJpbmcJY29tcGxldGVkBnVpbnQ2NAQAAAAAAABSMgNhZGQAAAAAAACFzVUFZXJhc2UAAAAAMRqFzVUIZXJhc2VhbGwAAFRWsUqKssILc2V0Y29tcGxldGUAAQAAAAAATBPNA2k2NAAACHRvZG9fcm93AAAAAAA='
 )
 export const abi = ABI.from(abiBlob)
-export class Contract extends BaseContract {
-    constructor(args: PartialBy<ContractArgs, 'abi' | 'account'>) {
-        super({
-            client: args.client,
-            abi: abi,
-            account: Name.from('todoapp12345'),
-        })
-    }
-    action<T extends ActionNames>(
-        name: T,
-        data: ActionNameParams[T],
-        options?: ActionOptions
-    ): Action {
-        return super.action(name, data, options)
-    }
-    table<T extends TableNames>(name: T, scope?: NameType): Table<RowType<T>> {
-        return super.table(name, scope, TableMap[name])
-    }
-}
-export interface ActionNameParams {
-    add: ActionParams.Add
-    erase: ActionParams.Erase
-    eraseall: ActionParams.Eraseall
-    setcomplete: ActionParams.Setcomplete
-}
-export namespace ActionParams {
-    export interface Add {
-        author: NameType
-        description: string
-    }
-    export interface Erase {
-        author: NameType
-        id: UInt64Type
-    }
-    export interface Eraseall {
-        author: NameType
-    }
-    export interface Setcomplete {
-        author: NameType
-        id: UInt64Type
-        complete: boolean
-    }
-}
 export namespace Types {
     @Struct.type('add')
     export class add extends Struct {
@@ -99,5 +56,49 @@ export interface TableTypes {
     todos: Types.todo_row
 }
 export type RowType<T> = T extends keyof TableTypes ? TableTypes[T] : any
-export type ActionNames = keyof ActionNameParams
 export type TableNames = keyof TableTypes
+export namespace ActionParams {
+    export namespace Type {}
+    export interface add {
+        author: NameType
+        description: string
+    }
+    export interface erase {
+        author: NameType
+        id: UInt64Type
+    }
+    export interface eraseall {
+        author: NameType
+    }
+    export interface setcomplete {
+        author: NameType
+        id: UInt64Type
+        complete: boolean
+    }
+}
+export interface ActionNameParams {
+    add: ActionParams.add
+    erase: ActionParams.erase
+    eraseall: ActionParams.eraseall
+    setcomplete: ActionParams.setcomplete
+}
+export type ActionNames = keyof ActionNameParams
+export class Contract extends BaseContract {
+    constructor(args: PartialBy<ContractArgs, 'abi' | 'account'>) {
+        super({
+            client: args.client,
+            abi: abi,
+            account: args.account || Name.from('cj2p1lhcmbrw'),
+        })
+    }
+    action<T extends ActionNames>(
+        name: T,
+        data: ActionNameParams[T],
+        options?: ActionOptions
+    ): Action {
+        return super.action(name, data, options)
+    }
+    table<T extends TableNames>(name: T, scope?: NameType): Table<RowType<T>> {
+        return super.table(name, scope, TableMap[name])
+    }
+}

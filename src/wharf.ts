@@ -5,7 +5,7 @@ import {WebRenderer} from '@wharfkit/web-renderer'
 import {writable, type Writable} from 'svelte/store'
 
 // The private key to use during development for our testnet account
-const key = 'PVT_K1_2DK8hmjUJwsA1jfdps3uGRm82zhQ2jzZc6ThyJUKe3yRCer5Ni'
+const key = 'PVT_K1_zpEJtu6MoLYGVwFrTaDCdwJvtywmjEKSqFcU1fqTpoXhtH28G'
 
 // The blockchain(s) this application is deployed on
 const chains = [Chains.Jungle4]

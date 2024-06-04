@@ -8,6 +8,8 @@
 
     const contract = new Contract({client: session.client})
 
+    let loading = false
+
     async function addTask(event: Event) {
         const form = event.target as HTMLFormElement
 
@@ -41,6 +43,9 @@
 
         // Reset the form inputs
         form.reset()
+
+        // Reload the tasks from the smart contract after a short delay
+        setTimeout(getTasks, 500)
     }
 
     async function setTaskComplete(id: number, complete: boolean) {
@@ -75,7 +80,9 @@
     const tasks: Writable<Types.todo_row[]> = writable([])
 
     async function getTasks() {
+        loading = true
         tasks.set(await contract.table('todos', session.actor).all())
+        loading = false
     }
 
     onMount(getTasks)
@@ -90,41 +97,45 @@
             required
         />
     </form>
-    {#each $tasks as task}
-        <div class="grid">
-            <div class="details">
-                <div class="status">
-                    {#if task.completed.equals(1)}
-                        ✅
-                    {:else}
-                        ⌛
-                    {/if}
-                </div>
-                <div class="headings">
-                    <h5>{task.description}</h5>
-                    <h6>{new Date(task.timestamp.toMilliseconds()).toDateString()}</h6>
-                </div>
-            </div>
-            <div />
-            <div class="controls">
-                {#if task.completed.equals(1)}
-                    <button class="secondary" on:click={() => setTaskComplete(task.id, false)}>
-                        Mark incomplete
-                    </button>
-                {:else}
-                    <button class="primary" on:click={() => setTaskComplete(task.id, true)}>
-                        Mark complete
-                    </button>
-                {/if}
-                <button class="tertiary" on:click={() => deleteTask(task.id)}> Delete task </button>
-            </div>
-        </div>
+    {#if $tasks.length === 0 && loading}
+        <span class="loader"></span>
     {:else}
-        <hgroup>
-            <h3>No tasks</h3>
-            <h4>Create your first task using the textbox above.</h4>
-        </hgroup>
-    {/each}
+        {#each $tasks as task}
+            <div class="grid">
+                <div class="details">
+                    <div class="status">
+                        {#if task.completed.equals(1)}
+                            ✅
+                        {:else}
+                            ⌛
+                        {/if}
+                    </div>
+                    <div class="headings">
+                        <h5>{task.description}</h5>
+                        <h6>{new Date(task.timestamp.toMilliseconds()).toDateString()}</h6>
+                    </div>
+                </div>
+                <div />
+                <div class="controls">
+                    {#if task.completed.equals(1)}
+                        <button class="secondary" on:click={() => setTaskComplete(task.id, false)}>
+                            Mark incomplete
+                        </button>
+                    {:else}
+                        <button class="primary" on:click={() => setTaskComplete(task.id, true)}>
+                            Mark complete
+                        </button>
+                    {/if}
+                    <button class="tertiary" on:click={() => deleteTask(task.id)}> Delete task </button>
+                </div>
+            </div>
+        {:else}
+            <hgroup>
+                <h3>No tasks</h3>
+                <h4>Create your first task using the textbox above.</h4>
+            </hgroup>
+        {/each}
+    {/if}
 </main>
 
 <style>
@@ -140,4 +151,24 @@
     main hgroup {
         text-align: center;
     }
+    .loader {
+        width: 48px;
+        height: 48px;
+        border: 5px solid #1095C1;
+        border-bottom-color: transparent;
+        border-radius: 50%;
+        display: block;
+        box-sizing: border-box;
+        animation: rotation 1s linear infinite;
+        margin: 0 auto;
+    }
+
+    @keyframes rotation {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    } 
 </style>
